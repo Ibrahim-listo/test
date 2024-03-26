@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Migrations;
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,6 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Create users table
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -21,15 +24,19 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // Create password_reset_tokens table
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
+            $table->id(); // Use id as primary key
+            $table->string('email')->index(); // Add index for email column
             $table->string('token');
             $table->timestamp('created_at')->nullable();
+            $table->foreign('email')->references('email')->on('users')->onDelete('cascade'); // Add foreign key constraint
         });
 
+        // Create sessions table
         Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->id(); // Use id as primary key
+            $table->foreignId('user_id')->nullable()->index(); // Add index for user_id column
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
@@ -41,9 +48,4 @@ return new class extends Migration
      * Reverse the migrations.
      */
     public function down(): void
-    {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
-    }
-};
+
