@@ -1,3 +1,8 @@
+# This is a Git ignore file
+
+# dependencies and build artifacts
+/node_modules
+/build
+
+# log files
 *.log
-node_modules/
-build/
