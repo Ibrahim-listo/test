@@ -1,27 +1,30 @@
 import PropTypes from 'prop-types';
 import { forwardRef, useEffect, useRef, useImperativeHandle } from 'react';
 
+// TextInput component with forwardRef for accessing the child component's methods/refs
 const TextInput = forwardRef(
   (
     {
-      type = 'text',
+      type = 'text', // Default type is 'text'
       className,
-      isFocused = false,
-      name,
+      isFocused = false, // Default isFocused is false
+      name, // Required prop
       required,
       autoComplete,
-      ...props
+      ...props // Any additional props
     },
-    ref
+    ref // Reference to the component
   ) => {
-    const inputRef = useRef();
+    const inputRef = useRef(); // Create a ref for the input element
 
+    // Use useImperativeHandle to expose the focus method to the parent component
     useImperativeHandle(ref, () => ({
       focus: () => {
         inputRef.current.focus();
       }
     }));
 
+    // Focus the input when isFocused is true
     useEffect(() => {
       if (isFocused) {
         inputRef.current.focus();
@@ -30,33 +33,6 @@ const TextInput = forwardRef(
 
     return (
       <input
-        {...props}
+        {...props} // Spread the rest of the props
         type={type}
-        className={`border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm ${className}`}
-        name={name}
-        ref={inputRef}
-        required={required}
-        autoComplete={autoComplete}
-      />
-    );
-  }
-);
-
-TextInput.propTypes = {
-  type: PropTypes.oneOf(['text', 'email', 'password']),
-  className: PropTypes.string,
-  isFocused: PropTypes.bool,
-  name: PropTypes.string.isRequired,
-  required: PropTypes.bool,
-  autoComplete: PropTypes.string
-};
-
-TextInput.defaultProps = {
-  type: 'text',
-  className: '',
-  isFocused: false,
-  required: false,
-  autoComplete: 'on'
-};
-
-export default TextInput;
+        className={`border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-3
