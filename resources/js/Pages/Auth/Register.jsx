@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -7,6 +7,8 @@ import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Register() {
+  const [showPassword, setShowPassword] = useState(false);
+
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
     email: '',
@@ -36,6 +38,12 @@ export default function Register() {
   const handlePasswordChange = (e) => {
     setData('password_confirmation', '');
     setData('password', e.target.value);
+  };
+
+  const handlePasswordFocus = () => {
+    setData('password', '');
+    setData('password_confirmation', '');
+    reset('password', 'password_confirmation');
   };
 
   return (
@@ -72,6 +80,7 @@ export default function Register() {
             value={data.email}
             className="mt-1 block w-full"
             autoComplete="username"
+            autoCapitalize="off"
             minHeight={16}
             placeholder="Enter your email"
             onChange={(e) => setData('email', e.target.value)}
@@ -86,7 +95,7 @@ export default function Register() {
 
           <TextInput
             id="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             value={data.password}
             className="mt-1 block w-full"
@@ -94,10 +103,29 @@ export default function Register() {
             minHeight={16}
             placeholder="Enter your password"
             onChange={handlePasswordChange}
+            onFocus={handlePasswordFocus}
             required
           />
 
           <InputError message={errors.password} className="mt-2" />
+
+          {showPassword ? (
+            <button
+              type="button"
+              onClick={() => setShowPassword(false)}
+              className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+            >
+              Hide password
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setShowPassword(true)}
+              className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+            >
+              Show password
+            </button>
+          )}
         </div>
 
         <div className="mt-4">
@@ -105,7 +133,7 @@ export default function Register() {
 
           <TextInput
             id="password_confirmation"
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password_confirmation"
             value={data.password_confirmation}
             className="mt-1 block w-full"
@@ -113,6 +141,7 @@ export default function Register() {
             minHeight={16}
             placeholder="Confirm your password"
             onChange={(e) => setData('password_confirmation', e.target.value)}
+            onFocus={handlePasswordFocus}
             required
           />
 
@@ -123,16 +152,4 @@ export default function Register() {
           <Link
             href={route('login')}
             tabIndex={0}
-            className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-          >
-            Already registered?
-          </Link>
-
-          <PrimaryButton className="ms-4" disabled={processing}>
-            Register
-          </PrimaryButton>
-        </div>
-      </form>
-    </GuestLayout>
-  );
-}
+            className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none
