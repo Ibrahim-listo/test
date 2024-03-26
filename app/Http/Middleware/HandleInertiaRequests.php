@@ -3,33 +3,37 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
-use Inertia\Middleware;
+use Inertia\Middleware as BaseMiddleware;
 
-class HandleInertiaRequests extends Middleware
+class HandleInertiaRequests extends BaseMiddleware
 {
     /**
-     * The root template that is loaded on the first page visit.
+     * The name of the root template to be used on the first page visit.
      *
      * @var string
      */
-    protected string $rootView = 'app';
+    protected string $rootTemplate = 'app';
 
     /**
      * Determine the current asset version.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string|null
      */
-    public function version(Request $request): ?string
+    public function determineAssetVersion(Request $request): ?string
     {
-        return parent::version($request);
+        return parent::determineAssetVersion($request);
     }
 
     /**
      * Define the props that are shared by default.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return array<string, mixed>
      */
-    public function share(Request $request): array
+    public function shareData(Request $request): array
     {
-        return array_merge(parent::share($request), [
+        return array_merge(parent::shareData($request), [
             'auth' => [
                 'user' => $request->user(),
             ],
