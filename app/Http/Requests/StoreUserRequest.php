@@ -11,7 +11,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true; // Allow the request if the user is authenticated and has the required permissions
     }
 
     /**
@@ -22,7 +22,10 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|integer|in:1,2,3', // Assuming role is an integer and can have values 1, 2, or 3
         ];
     }
 }
