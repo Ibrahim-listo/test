@@ -1,17 +1,29 @@
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
+        # Options directive is used to modify the behavior of the server.
+        # Here, we are disabling MultiViews and Indexes.
+        # MultiViews allows the server to return multiple options for a requested file,
+        # while Indexes enables directory listings when a directory is accessed without a specific file.
         Options -MultiViews -Indexes
     </IfModule>
 
+    # The RewriteEngine directive enables the rewrite engine module.
+    # This module allows for complex URL manipulation based on rules specified in the configuration file.
     RewriteEngine On
 
-    # Handle Authorization Header
+    # This rule sets an environment variable HTTP_AUTHORIZATION to the value of the Authorization header.
+    # This is useful for handling authentication in a consistent way across different parts of the application.
     RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # Redirect Trailing Slashes If Not A Folder...
+    # This rule checks if the request method is GET, the requested file is not a directory,
+    # and the requested URI ends with a slash. If all of these conditions are met,
+    # the server will redirect the request to the same URI without the trailing slash.
+    # This is useful for ensuring consistent URLs and avoiding issues with duplicate content.
     RewriteCond %{REQUEST_METHOD} =GET
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
 
+
+</IfModule>
