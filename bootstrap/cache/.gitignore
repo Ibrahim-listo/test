@@ -1,6 +1,7 @@
 # Byte-compiled Python files
 *.pyc
 *.pyo
+# Include any subdirectories that may contain byte-compiled files
 [*.pyc-/*]
 [*.pyo-/*]
 
@@ -10,6 +11,7 @@ _*.pyc
 *.so
 *.egg
 *.tmp
+# Include any subdirectories that may contain cached files
 [_*//*.pyc]
 [_*//*.pyo]
 
@@ -22,6 +24,7 @@ _*.pyc
 *.mdb
 *.dbf
 *.csv
+# Include any subdirectories that may contain log files or databases
 [*.log-/*]
 [*.sql-/*]
 [*.sqlite-/*]
@@ -59,6 +62,7 @@ secret_key
 *.eggs/
 dist/
 build/
+# Include any subdirectories that may contain Python packaging files
 [*.egg-info-/*]
 [*.eggs-/*]
 [dist-/*]
@@ -74,9 +78,11 @@ venv/
 
 # Thumbs.db files
 Thumbs.db
+# Include any subdirectories that may contain Thumbs.db files
 [Thumbs.db-/*]
 
 # Git ignore file
 .gitignore
 
 # End of .gitignore file
+``
