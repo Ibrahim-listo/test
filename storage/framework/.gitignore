@@ -1,15 +1,19 @@
-# Organize the files in a directory with a clear structure
 .
 ├── config/
+│   ├── database.php
+│   ├── security.php
 │   └── config.php
 ├── controllers/
-│   ├── compiled.php
-│   └── maintenance.php
+│   ├── CompiledController.php
+│   └── MaintenanceController.php
 ├── events/
-│   ├── events.scanned.php
-│   └── schedule-*
+│   ├── EventScanned.php
+│   └── ScheduleEvent.php
 ├── routes/
-│   ├── routes.php
-│   └── routes.scanned.php
-└── services.json
+│   ├── WebRoutes.php
+│   └── ApiRoutes.php
+├── middleware/
+│   ├── AuthenticationMiddleware.php
+│   └── RateLimitingMiddleware.php
+└── config.json
 
