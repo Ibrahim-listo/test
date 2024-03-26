@@ -1,6 +1,15 @@
-*
-!.git
-!.gitignore
-!README.md
-!LICENSE
+---
+title: "File Ignore List for Git"
+description: "This is a list of files and directories to be ignored in a Git repository."
+---
 
+# File Ignore List for Git
+
+This is a list of files and directories that should be ignored in a Git repository.
+
+## Files to Ignore
+
+- `.git`
+- `.gitignore`
+- `README.md`
+- `LICENSE`
