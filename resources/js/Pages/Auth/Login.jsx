@@ -8,39 +8,52 @@ import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Login({ status, canResetPassword }) {
+    // Initialize the useForm hook with email, password, and remember fields
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
         remember: false,
     });
+
+    // Set up state for password visibility
     const [passwordVisible, setPasswordVisible] = useState(false);
+
+    // Create a ref for the password input
     const passwordInputRef = useRef();
 
+    // Set focus on the password input when the component mounts
     useEffect(() => {
         passwordInputRef.current.focus();
     }, []);
 
+    // Callback function for handling password input focus
     const handlePasswordInputFocus = useCallback(() => {
         setPasswordVisible(true);
     }, []);
 
+    // Callback function for handling password input blur
     const handlePasswordInputBlur = useCallback(() => {
         setPasswordVisible(false);
     }, []);
 
+    // Submit function for handling form submission
     const submit = (e) => {
         e.preventDefault();
 
         post(route('login'));
     };
 
+    // Render the component
     return (
         <GuestLayout>
             <Head title="Log in" />
 
+            {/* Display status message if available */}
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
+            {/* Begin the form */}
             <form onSubmit={submit}>
+                {/* Email input field */}
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
 
@@ -58,9 +71,11 @@ export default function Login({ status, canResetPassword }) {
                         ref={passwordInputRef}
                     />
 
+                    {/* Display email input error if available */}
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
+                {/* Password input field */}
                 <div className="mt-4">
                     <InputLabel htmlFor="password" value="Password" />
 
@@ -79,9 +94,11 @@ export default function Login({ status, canResetPassword }) {
                         ref={passwordInputRef}
                     />
 
+                    {/* Display password input error if available */}
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
+                {/* Remember me checkbox field */}
                 <div className="block mt-4">
                     <label className="flex items-center">
                         <Checkbox
@@ -94,6 +111,7 @@ export default function Login({ status, canResetPassword }) {
                     </label>
                 </div>
 
+                {/* Login button and forgot password link */}
                 <div className="flex items-center justify-end mt-4">
                     {canResetPassword && (
                         <Link
@@ -104,6 +122,7 @@ export default function Login({ status, canResetPassword }) {
                         </Link>
                     )}
 
+                    {/* Login button */}
                     <PrimaryButton
                         type="submit"
                         className="ms-4"
