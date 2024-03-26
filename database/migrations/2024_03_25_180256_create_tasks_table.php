@@ -18,11 +18,11 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description')->nullable(); // changed 'longText' to 'text' for simplicity
+            $table->text('description')->nullable();
             $table->string('image_path')->nullable();
-            $table->string('status')->default('pending'); // added a default value
-            $table->string('priority')->default('medium'); // added a default value
-            $table->date('due_date')->nullable(); // changed 'string' to 'date' for simplicity
+            $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
+            $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
+            $table->date('due_date')->nullable();
             $table->foreignId('assigned_user_id')->constrained('users');
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('updated_by')->constrained('users');
@@ -47,4 +47,3 @@ return new class extends Migration
         Schema::dropIfExists('tasks');
     }
 };
-
