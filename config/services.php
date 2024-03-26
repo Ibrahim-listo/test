@@ -2,38 +2,33 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Third Party Services
-    |--------------------------------------------------------------------------
-    |
-    | This file is for storing the credentials and configurations for third
-    | party services such as Mailgun, Postmark, AWS, SendGrid, and more.
-    | This file provides the de facto location for this type of information,
-    | allowing packages to have a conventional file to locate the various
-    | service credentials and configurations.
-    |
-    */
+    // Third-party services credentials and configurations
+    'third-party-services' => [
 
-    'postmark' => [
-        'token' => env('POSTMARK_TOKEN'),
-    ],
+        // Postmark
+        'postmark' => [
+            'token' => env('POSTMARK_TOKEN'),
+        ],
 
-    'ses' => [
-        'key' => env('AWS_ACCESS_KEY_ID'),
-        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
-    ],
+        // Amazon Web Services (AWS) - Simple Email Service (SES)
+        'ses' => [
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+        ],
 
-    'slack' => [
-        'notifications' => [
-            'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
-            'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
+        // Slack
+        'slack' => [
+            'notifications' => [
+                'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
+                'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
+            ],
+        ],
+
+        // SendGrid
+        'sendgrid' => [
+            'api_key' => env('SENDGRID_API_KEY'),
         ],
     ],
-
-    'sendgrid' => [
-        'api_key' => env('SENDGRID_API_KEY'),
-    ],
-
 ];
+
