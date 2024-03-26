@@ -15,6 +15,10 @@ class ProfileController extends Controller
 {
     /**
      * Display the user's profile form.
+     *
+     * This method returns an Inertia render of the Profile/Edit view, passing in two values:
+     * 1. $mustVerifyEmail: a boolean indicating whether the user's account requires email verification
+     * 2. $status: the status message from the user's session, if it exists
      */
     public function edit(Request $request): Response
     {
@@ -26,6 +30,12 @@ class ProfileController extends Controller
 
     /**
      * Update the user's profile information.
+     *
+     * This method updates the authenticated user's profile information using the validated data from the
+     * ProfileUpdateRequest. If the user's email address has been changed, their email verification status
+     * is set to null. The user's profile information is then saved to the database.
+     *
+     * A success message is added to the user's session, and they are redirected back to the profile edit page.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
@@ -44,22 +54,11 @@ class ProfileController extends Controller
 
     /**
      * Delete the user's account.
+     *
+     * This method deletes the authenticated user's account after validating their password. The user is logged out,
+     * their session is invalidated, and a new CSRF token is generated. They are then redirected to the homepage.
      */
     public function destroy(Request $request): RedirectResponse
     {
         $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
-
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        Session::invalidate();
-        Session::regenerateToken();
-
-        return redirect()->to('/');
-    }
-}
+            'password' => ['required', 'current_
