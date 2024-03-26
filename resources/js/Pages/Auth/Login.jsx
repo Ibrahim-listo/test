@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback, useRef, useState } from 'react';
 import Checkbox from '@/Components/Checkbox';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
@@ -14,11 +14,18 @@ export default function Login({ status, canResetPassword }) {
         remember: false,
     });
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const passwordInputRef = useRef();
 
     useEffect(() => {
-        return () => {
-            reset('password');
-        };
+        passwordInputRef.current.focus();
+    }, []);
+
+    const handlePasswordInputFocus = useCallback(() => {
+        setPasswordVisible(true);
+    }, []);
+
+    const handlePasswordInputBlur = useCallback(() => {
+        setPasswordVisible(false);
     }, []);
 
     const submit = (e) => {
@@ -44,9 +51,11 @@ export default function Login({ status, canResetPassword }) {
                         value={data.email}
                         className="mt-1 block w-full"
                         autoComplete="username"
+                        autoFocus
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
                         required
+                        ref={passwordInputRef}
                     />
 
                     <InputError message={errors.email} className="mt-2" />
@@ -62,11 +71,12 @@ export default function Login({ status, canResetPassword }) {
                         value={data.password}
                         className="mt-1 block w-full"
                         autoComplete="current-password"
-                        onFocus={() => setPasswordVisible(true)}
-                        onBlur={() => setPasswordVisible(false)}
+                        onFocus={handlePasswordInputFocus}
+                        onBlur={handlePasswordInputBlur}
                         onChange={(e) => setData('password', e.target.value)}
                         required
                         minLength={8}
+                        ref={passwordInputRef}
                     />
 
                     <InputError message={errors.password} className="mt-2" />
@@ -94,7 +104,12 @@ export default function Login({ status, canResetPassword }) {
                         </Link>
                     )}
 
-                    <PrimaryButton type="submit" className="ms-4" disabled={processing}>
+                    <PrimaryButton
+                        type="submit"
+                        className="ms-4"
+                        disabled={processing}
+                        tabIndex={-1}
+                    >
                         Log in
                     </PrimaryButton>
                 </div>
@@ -102,3 +117,4 @@ export default function Login({ status, canResetPassword }) {
         </GuestLayout>
     );
 }
+
