@@ -1,10 +1,37 @@
 # .gitignore
 
 # Laravel
-*.blade.php
-*.css
-*.html
-*.md
-*.php
+/public/assets
+/storage/*.key
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
 
-#
+# Laravel Ignored Files
+composer.lock
+node_modules/
+yarn.lock
+
+# IDEs and Text Editors
+.idea/
+*.sublime-workspace
+*.tmproj
+*.phpstorm.meta.php
+
+# OS Specific
+.DS_Store
+.env
+.env.backup
+
+# Miscellaneous
+.phpcs.xml
+.phpmd.xml
+.styleci.yml
+npm-debug.log
+
+# Laravel Mix
+!/public/mix-manifest.json
+!/public/js/app.js
+!/public/css/app.css
+
