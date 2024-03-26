@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class StoreTaskRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; // Allow the request if the user is authenticated
+        return Gate::allows('create-task', $this->user());
     }
 
     /**
@@ -24,7 +26,7 @@ class StoreTaskRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'due_date' => 'required|date',
+            'due_date' => 'required|date|after_or_equal:' . Carbon::now()->format('Y-m-d'),
             'assigned_to' => 'exists:users,id',
         ];
     }
