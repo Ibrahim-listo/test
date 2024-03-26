@@ -1,7 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App\Console\Commands;
+
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
+use Psr\Log\LoggerInterface;
 
 class InspireCommand extends Command
 {
@@ -20,29 +25,51 @@ class InspireCommand extends Command
     protected $description = 'Display an inspiring quote';
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var Inspiring
+     */
+    private $inspiring;
+
+    /**
      * Create a new command instance.
      *
+     * @param  LoggerInterface  $logger
+     * @param  Inspiring  $inspiring
      * @return void
      */
-    public function __construct()
+    public function __construct(LoggerInterface $logger, Inspiring $inspiring)
     {
         parent::__construct();
+
+        $this->logger = $logger;
+        $this->inspiring = $inspiring;
     }
 
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         try {
-            $quote = Inspiring::quote();
+            $quote = $this->inspiring->quote();
         } catch (\Exception $e) {
-            $this->error('Error while fetching quote: ' . $e->getMessage());
-            return;
+            $this->logger->error('Error while fetching quote: ' . $e->getMessage());
+
+            $this->error('An error occurred while fetching the quote.');
+
+            return 1;
         }
 
-        $this->comment($quote);
-    }
-}
+        if ($quote === null) {
+            $this->error('An error occurred while fetching the quote.');
+
+            return 1;
+        }
+
+        $this
