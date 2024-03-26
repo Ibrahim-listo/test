@@ -16,6 +16,11 @@ class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
+     *
+     * This method returns an Inertia response rendering the 'Auth/Login' view.
+     * The view is passed an array of data, including a boolean indicating
+     * whether the password reset route is available and the current status
+     * message from the session.
      */
     public function create(): Response
     {
@@ -27,6 +32,10 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Handle an incoming authentication request.
+     *
+     * This method handles an incoming authentication request using the provided
+     * LoginRequest. It authenticates the user, regenerates the session, and
+     * redirects the user to the intended dashboard route.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
@@ -35,19 +44,4 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         return Redirect::intended(route('dashboard', [], false));
-    }
-
-    /**
-     * Destroy an authenticated session.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
-    }
-}
+   
