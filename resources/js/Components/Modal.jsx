@@ -1,9 +1,9 @@
-import { Fragment } from 'react';
+import { Fragment, ReactNode } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
 type ModalProps = {
-  children: React.ReactNode;
-  show?: boolean;
+  children: ReactNode;
+  isOpen?: boolean;
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   closeable?: boolean;
   backdropClose?: boolean;
@@ -11,12 +11,13 @@ type ModalProps = {
   onClose?: () => void;
 };
 
-type ModalContentProps = {
-  children: React.ReactNode;
+const ModalContent = ({
+  children,
+  maxWidthClass,
+}: {
+  children: ReactNode;
   maxWidthClass: string;
-};
-
-const ModalContent = ({ children, maxWidthClass }: ModalContentProps) => {
+}) => {
   return (
     <Dialog.Panel
       className={`mb-6 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto ${maxWidthClass}`}
@@ -28,7 +29,7 @@ const ModalContent = ({ children, maxWidthClass }: ModalContentProps) => {
 
 export default function Modal({
   children,
-  show = false,
+  isOpen = false,
   maxWidth = '2xl',
   closeable = true,
   backdropClose = true,
@@ -43,19 +44,19 @@ export default function Modal({
     '2xl': 'sm:max-w-2xl',
   }[maxWidth];
 
-  const close = () => {
+  const handleClose = () => {
     if (closeable) {
       onClose();
     }
   };
 
   return (
-    <Transition show={show} as={Fragment} leave={transitionDuration}>
+    <Transition show={isOpen} as={Fragment} leave={transitionDuration}>
       <Dialog
         as="div"
         id="modal"
         className="fixed inset-0 flex overflow-y-auto px-4 py-6 sm:px-0 items-center z-50 transform transition-all"
-        onClose={close}
+        onClose={handleClose}
       >
         <Transition.Child
           as={Fragment}
@@ -68,7 +69,7 @@ export default function Modal({
         >
           <div
             className="absolute inset-0 bg-gray-500/75 dark:bg-gray-900/75"
-            onClick={() => backdropClose && close()}
+            onClick={() => backdropClose && handleClose()}
           />
         </Transition.Child>
 
@@ -78,4 +79,14 @@ export default function Modal({
           enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           enterTo="opacity-100 translate-y-0 sm:scale-100"
           leave={transitionDuration}
-          leaveFrom="opacity-100
+          leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+          leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+        >
+          <ModalContent maxWidthClass={maxWidthClass}>
+            {children}
+          </ModalContent>
+        </Transition.Child>
+      </Dialog>
+    </Transition>
+  );
+}
