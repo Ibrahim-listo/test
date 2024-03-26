@@ -8,21 +8,21 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::redirect('/','dashboard');
+// Redirect root URL to dashboard
+Route::redirect('/', 'dashboard');
 
-
-
-
-
+// Define routes that require authentication and user verification
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 
-Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
-Route::resource('project',ProjectController::class);
-Route::resource('task',TaskController::class);
-Route::resource('user',UserController::class);
-
+    Route::resource('projects', ProjectController::class);
+    Route::resource('tasks', TaskController::class);
+    Route::resource('users', UserController::class);
 });
 
+// Define routes that require authentication only
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
