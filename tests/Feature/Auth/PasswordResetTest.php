@@ -43,7 +43,8 @@ class PasswordResetTest extends TestCase
         $response->assertStatus(200);
 
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
-            $response = $this->get(route('password.reset', ['token' => $notification->token]));
+            $token = $notification->token;
+            $response = $this->get(route('password.reset', ['token' => $token]));
 
             $response->assertStatus(200);
 
@@ -62,8 +63,10 @@ class PasswordResetTest extends TestCase
         $response->assertStatus(200);
 
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+            $token = $notification->token;
+
             $response = $this->post(route('password.update'), [
-                'token' => $notification->token,
+                'token' => $token,
                 'email' => $user->email,
                 'password' => 'password',
                 'password_confirmation' => 'password',
@@ -77,3 +80,4 @@ class PasswordResetTest extends TestCase
         });
     }
 }
+
