@@ -14,14 +14,11 @@ class PasswordUpdateTest extends TestCase
     public function test_password_can_be_updated(): void
     {
         $user = User::factory()->create();
-        $user->password = bcrypt('password');
-        $user->save();
 
-        $response = $this
-            ->actingAs($user)
+        $response = $this->actingAs($user)
             ->from('/profile')
             ->put('/password', [
-                'current_password' => 'password',
+                'current_password' => $user->password,
                 'password' => 'new-password',
                 'password_confirmation' => 'new-password',
             ]);
@@ -30,17 +27,14 @@ class PasswordUpdateTest extends TestCase
             ->assertSessionHasNoErrors()
             ->assertRedirect('/profile');
 
-        $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
+        $this->assertTrue(Hash::check('new-password', $user->fresh()->password));
     }
 
     public function test_correct_password_must_be_provided_to_update_password(): void
     {
         $user = User::factory()->create();
-        $user->password = bcrypt('password');
-        $user->save();
 
-        $response = $this
-            ->actingAs($user)
+        $response = $this->actingAs($user)
             ->from('/profile')
             ->put('/password', [
                 'current_password' => 'wrong-password',
@@ -52,18 +46,17 @@ class PasswordUpdateTest extends TestCase
             ->assertSessionHasErrors('current_password')
             ->assertRedirect('/profile');
 
-        $this->assertTrue(Hash::check('password', $user->fresh()->password));
+        $this->assertTrue(Hash::check($user->password, $user->fresh()->password));
     }
 
     public function test_password_must_be_confirmed(): void
     {
         $user = User::factory()->create();
 
-        $response = $this
-            ->actingAs($user)
+        $response = $this->actingAs($user)
             ->from('/profile')
             ->put('/password', [
-                'current_password' => 'password',
+                'current_password' => $user->password,
                 'password' => 'new-password',
             ]);
 
@@ -71,5 +64,4 @@ class PasswordUpdateTest extends TestCase
             ->assertSessionHasErrors('password')
             ->assertRedirect('/profile');
     }
-
-
+}
