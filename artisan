@@ -5,14 +5,45 @@ declare(strict_types=1);
 
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\HelpCommand;
+use MyApp\MyCommand;
 
 require_once __DIR__.'/vendor/autoload.php';
+
+if (!file_exists(__DIR__.'/vendor/autoload.php')) {
+    fwrite(STDERR, "Composer's autoloader not found. Please run 'composer install' first.\n");
+    exit(1);
+}
 
 $input = new ArgvInput();
 $application = new Application('My Console Application', '1.0.0');
 
-// Register commands here if needed
+// Register the built-in 'help' command
+$application->add(new HelpCommand());
 
-$status = $application->run($input);
+// Register your custom command(s)
+$application->add(new MyCommand());
+
+try {
+    $status = $application->run($input);
+} catch (\Exception $e) {
+    fwrite(STDERR, "Error: " . $e->getMessage() . "\n");
+    $status = 1;
+}
 
 exit($status);
+
+
+namespace MyApp;
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+class MyCommand extends Command
+{
+    protected static $defaultName = 'my:command';
+
+    protected function configure()
+    {
+        $this->setDescription('My custom command
