@@ -1,3 +1,14 @@
+# This is a simple web server configuration file for use with the Apache HTTP Server.
+
+# Allow all requests to this server
 User-agent: *
 Allow: /
 
+# Comments in this file follow the same format as standard Apache configuration files.
+# They are denoted by the '#' character and continue until the end of the line.
+
+# The 'User-agent' directive sets the user agent that is allowed to access the server.
+# In this case, it is set to '*', which means all user agents are allowed.
+
+# The 'Allow' directive specifies the URLs that are allowed to be accessed by the user agent.
+# In this case, it is set to '/', which means all URLs on the server are allowed.
