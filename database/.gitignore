@@ -1,9 +1,12 @@
 import sqlite3
 import os
 
-# Create a new SQLite database with a filename that matches the wildcard pattern
-for filename in os.listdir('.'):
-    if filename.endswith('.sqlite'):
-        conn = sqlite3.connect(filename)
-        print(f'Created a new SQLite database: {filename}')
-        conn.close()
+# Create a new SQLite database with a unique filename
+database_name = "new_database.sqlite"
+if not os.path.exists(database_name):
+    conn = sqlite3.connect(database_name)
+    print(f'Created a new SQLite database: {database_name}')
+    conn.close()
+else:
+    print(f'The database {database_name} already exists.')
+
