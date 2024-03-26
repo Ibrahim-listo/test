@@ -27,4 +27,13 @@ const hoverStyles = {
 };
 
 const focusStyles = {
-  inactive: '
+  inactive: 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
+  active: 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
+};
+
+const ResponsiveNavLink = ({ isActive, className, children }: ResponsiveNavLinkProps) => {
+  return (
+    <Link
+      href=""
+      className={`
+        block py-2 pl-3 pr-4 text-base font-medium ${isActive ? textStyles.active : textStyles.inactive}
