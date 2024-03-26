@@ -1,18 +1,7 @@
+// Import the base, components, and utilities styles from Tailwind CSS
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-// Add any custom styles here
-
-// Add any additional configurations here
-module.exports = {
-  purge: [],
-  darkMode: false, // or 'media' or 'class'
-  theme: {
-    extend: {},
-  },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
-}
+// This is where you can add any custom styles that you want to include
+//
