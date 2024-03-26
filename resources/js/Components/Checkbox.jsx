@@ -1,14 +1,17 @@
 import PropTypes from 'prop-types';
 
+// Default export of a functional component named Checkbox
 export default function Checkbox({
+  // List of props with their default values
   className = '',
   checked = false,
   name = '',
   id = '',
   tabIndex = 0,
-  onChange = () => {},
-  ...props
+  onChange = () => {}, // Default onChange function that does nothin
+  ...props // Checkbox can take any additional props (e.g. style)
 }) {
+  // JSX returned by the component
   return (
     <label htmlFor={id} className="flex items-center">
       <input
@@ -27,6 +30,7 @@ export default function Checkbox({
   );
 }
 
+// propTypes validation for the component
 Checkbox.propTypes = {
   className: PropTypes.string,
   checked: PropTypes.bool,
@@ -36,3 +40,4 @@ Checkbox.propTypes = {
   onChange: PropTypes.func,
   children: PropTypes.node
 };
+
