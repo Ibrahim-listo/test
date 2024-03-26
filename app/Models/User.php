@@ -14,6 +14,10 @@ class CustomUser extends Authenticatable implements MustVerifyEmail
     /**
      * The attributes that are mass assignable.
      *
+     * The $fillable property is an array that specifies which fields can be mass-assigned
+     * via the create method. In this case, the 'name', 'email', and 'password' fields
+     * can be mass-assigned.
+     *
      * @var array<int, string>
      */
     protected $fillable = [
@@ -25,6 +29,10 @@ class CustomUser extends Authenticatable implements MustVerifyEmail
     /**
      * The attributes that should be hidden for serialization.
      *
+     * The $hidden property is an array that specifies which fields should be hidden
+     * when the model is converted to an array or JSON. In this case, the 'password'
+     * and 'remember_token' fields are hidden.
+     *
      * @var array<int, string>
      */
     protected $hidden = [
@@ -34,6 +42,10 @@ class CustomUser extends Authenticatable implements MustVerifyEmail
 
     /**
      * The attributes that should be cast.
+     *
+     * The $casts property is an array that specifies which fields should be cast
+     * to other data types. In this case, the 'email_verified_at' field is cast to a
+     * Carbon\Carbon instance, and the 'password' field is cast to a hashed string.
      *
      * @return array<string, string>
      */
@@ -50,6 +62,9 @@ class CustomUser extends Authenticatable implements MustVerifyEmail
     /**
      * Get the user's full name.
      *
+     * The getFullNameAttribute method returns the user's full name by concatenating
+     * the 'first_name' and 'last_name' fields.
+     *
      * @return string
      */
     public function getFullNameAttribute(): string
@@ -60,19 +75,6 @@ class CustomUser extends Authenticatable implements MustVerifyEmail
     /**
      * Check if the user has a role.
      *
-     * @param string $role
-     * @return bool
-     */
-    public function hasRole(string $role): bool
-    {
-        return in_array($role, $this->roles);
-    }
+     * The hasRole method checks if the user has a specific role. It takes a role string
+     * as an argument and returns a boolean value based on whether the user has that role.
 
-    /**
-     * Get the user's roles.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function roles()
-    {
-        return $this->belongsTo
