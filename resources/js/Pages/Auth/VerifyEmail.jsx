@@ -2,44 +2,23 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/react';
 
+// This is the main function that handles email verification. It receives a 'status' prop.
 export default function VerifyEmail({ status }) {
-    const { post, processing } = useForm({});
+  // The 'useForm' hook is used to create a form with some additional functionality.
+  // An empty object is passed as the initial form data.
+  const { post, processing } = useForm({});
 
-    const submit = (e) => {
-        e.preventDefault();
+  // This is the event handler for form submission. It prevents the default form submission behavior,
+  // and then calls the 'post' function with the route for sending email verification links.
+  const submit = (e) => {
+    e.preventDefault();
 
-        post(route('verification.send'));
-    };
+    post(route('verification.send'));
+  };
 
-    return (
-        <GuestLayout>
-            <Head title="Email Verification" />
+  return (
+    <GuestLayout>
+      {/* This sets the title of the page using the 'Head' component from Inertia.js. */}
+      <Head title="Email Verification" />
 
-            <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                Thanks for signing up! Before getting started, could you verify your email address by clicking on the
-                link we just emailed to you? If you didn't receive the email, we will gladly send you another.
-            </div>
-
-            {status === 'verification-link-sent' && (
-                <div className="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-                    A new verification link has been sent to the email address you provided during registration.
-                </div>
-            )}
-
-            <form onSubmit={submit}>
-                <div className="mt-4 flex items-center justify-between">
-                    <PrimaryButton disabled={processing}>Resend Verification Email</PrimaryButton>
-
-                    <Link
-                        href={route('logout')}
-                        method="post"
-                        as="button"
-                        className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                    >
-                        Log Out
-                    </Link>
-                </div>
-            </form>
-        </GuestLayout>
-    );
-}
+      <div className="mb-4 text-sm text-gray-60
