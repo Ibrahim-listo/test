@@ -1,19 +1,24 @@
-# This is a sample .gitignore file for a public directory
+# This is a .gitignore file for a public directory
 
-# Ignore all files and directories
+# Ignore all files and directories (with the exception of those explicitly excluded)
 *
 
-# Except for the following files and directories
+# However, there are some exceptions to this rule:
+
+# Include the .htaccess and .htpasswd files in the root directory
 !.htaccess
 !.htpasswd
+
+# Include the index.html file in the root directory
 !index.html
+
+# Include the public directory and all of its contents
 !public/
 
-# In the public directory, ignore only .php files
+# Within the public directory, ignore all .php files
 public/*/*.php
 
-# Exclude specific files in the public/css, public/js, and public/images directories
+# But, exclude specific files in the public/css, public/js, and public/images directories
 !public/css/*
 !public/js/*
 !public/images/*
-
