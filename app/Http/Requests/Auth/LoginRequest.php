@@ -9,10 +9,21 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * Class LoginRequest
+ *
+ * This class handles the validation and authentication logic for the login request.
+ * It extends the FormRequest class provided by Laravel.
+ */
 class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     * @author Your Name
+     * @description This method is used to determine if the user is authorized to make this request.
+     * In this case, it always returns true, meaning any user can make the login request.
      */
     public function authorize(): bool
     {
@@ -23,6 +34,10 @@ class LoginRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @author Your Name
+     * @description This method returns the validation rules that apply to the request.
+     * In this case, the email field is required, a string, and an email,
+     * and the password field is required and a string.
      */
     public function rules(): array
     {
@@ -36,6 +51,11 @@ class LoginRequest extends FormRequest
      * Attempt to authenticate the request's credentials.
      *
      * @throws \Illuminate\Validation\ValidationException
+     * @author Your Name
+     * @description This method attempts to authenticate the request's credentials.
+     * It ensures that the request is not rate limited,
+     * then attempts to authenticate the user with the provided email and password.
+     * If the authentication fails, it hits the rate limiter and throws a ValidationException.
      */
     public function authenticate(): void
     {
@@ -56,6 +76,9 @@ class LoginRequest extends FormRequest
      * Ensure the login request is not rate limited.
      *
      * @throws \Illuminate\Validation\ValidationException
+     * @author Your Name
+     * @description This method ensures that the login request is not rate limited.
+     * If it is rate limited, it dispatches a Lockout event and throws a ValidationException.
      */
     public function ensureIsNotRateLimited(): void
     {
@@ -77,9 +100,7 @@ class LoginRequest extends FormRequest
 
     /**
      * Get the rate limiting throttle key for the request.
-     */
-    public function throttleKey(): string
-    {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
-    }
-}
+     *
+     * @return string
+     * @author Your Name
+     * @description This method generates a unique
