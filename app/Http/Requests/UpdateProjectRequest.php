@@ -11,7 +11,7 @@ class UpdateProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; // Allow the request if the user is authenticated
+        return $this->user()->can('update', $this->project);
     }
 
     /**
@@ -22,9 +22,17 @@ class UpdateProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|string|in:in_progress,completed,on_hold',
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'status' => ['required', 'string', 'in:in_progress,completed,on_hold'],
         ];
+    }
+
+    /**
+     * Get the project instance that this request is for.
+     */
+    public function project(): \App\Models\Project
+    {
+        return $this->route('project');
     }
 }
