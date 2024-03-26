@@ -16,9 +16,7 @@ class EmailVerificationTest extends TestCase
 
     public function test_email_verification_screen_can_be_rendered(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => null,
-        ]);
+        $user = User::factory()->unverified()->create();
 
         $response = $this->actingAs($user)->get(route('verification.notice'));
 
@@ -27,9 +25,7 @@ class EmailVerificationTest extends TestCase
 
     public function test_email_can_be_verified(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => null,
-        ]);
+        $user = User::factory()->unverified()->create();
 
         Event::fake();
 
@@ -48,9 +44,7 @@ class EmailVerificationTest extends TestCase
 
     public function test_email_is_not_verified_with_invalid_hash(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => null,
-        ]);
+        $user = User::factory()->unverified()->create();
 
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
@@ -61,5 +55,16 @@ class EmailVerificationTest extends TestCase
         $this->actingAs($user)->get($verificationUrl);
 
         $this->assertFalse($user->fresh()->hasVerifiedEmail());
+    }
+
+    /**
+     * Create a user with unverified email.
+     *
+     * @param  array  $attributes
+     * @return \App\Models\User
+     */
+    protected function user(array $attributes = []): User
+    {
+        return User::factory()->unverified()->make($attributes);
     }
 }
