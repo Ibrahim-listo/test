@@ -23,9 +23,27 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:255',
-            'description' => 'required',
+            'title' => ['required', 'max:255', 'min:5', 'regex:/^[a-zA-Z0-9 ]+$/'],
+            'description' => 'required|min:10',
             'owner_id' => 'exists:users,id',
+        ];
+    }
+
+    /**
+     * Get the error messages for the validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'A project title is required.',
+            'title.max' => 'A project title may not be greater than 255 characters.',
+            'title.min' => 'A project title must be at least 5 characters.',
+            'title.regex' => 'A project title may only contain letters, numbers, and spaces.',
+            'description.required' => 'A project description is required.',
+            'description.min' => 'A project description must be at least 10 characters.',
+            'owner_id.exists' => 'The project owner is invalid.',
         ];
     }
 }
