@@ -12,6 +12,16 @@ use Illuminate\Support\Str;
 class UserFactory extends Factory
 {
     /**
+     * The attributes to be set on the model instance.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'email_verified_at' => null,
+        'remember_token' => Str::random(10),
+    ];
+
+    /**
      * The current password being used by the factory.
      */
     protected static string $password = 'password';
@@ -28,7 +38,6 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => Hash::make(static::$password),
-            'remember_token' => Str::random(10),
         ];
     }
 
@@ -37,9 +46,9 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+        $this->attributes['email_verified_at'] = null;
+
+        return $this;
     }
 
     /**
