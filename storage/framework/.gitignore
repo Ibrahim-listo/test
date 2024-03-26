@@ -1,19 +1,33 @@
-.
-├── config/
-│   ├── database.php
-│   ├── security.php
-│   └── config.php
-├── controllers/
-│   ├── CompiledController.php
-│   └── MaintenanceController.php
-├── events/
-│   ├── EventScanned.php
-│   └── ScheduleEvent.php
-├── routes/
-│   ├── WebRoutes.php
-│   └── ApiRoutes.php
-├── middleware/
-│   ├── AuthenticationMiddleware.php
-│   └── RateLimitingMiddleware.php
-└── config.json
+// Defines the database configuration settings such as the database name, username, password, and host.
+// These settings are used to establish a connection to the database.
 
+
+// Defines the security settings for the application, such as the encryption key and the hashing algorithm used for passwords.
+// These settings are used to secure user data and ensure that sensitive information is protected.
+
+
+// Defines the global configuration settings for the application, such as the application name, environment, and timezone.
+// These settings are used throughout the application to configure various components and settings.
+
+
+// Defines the CompiledController class, which handles the display of compiled code.
+// This controller is responsible for retrieving the compiled code from the cache and displaying it to the user.
+
+
+// Defines the MaintenanceController class, which handles the display of the maintenance page.
+// This controller is responsible for checking if the application is in maintenance mode and displaying the appropriate message to the user.
+
+
+// Defines the EventScanned class, which represents an event that has been scanned.
+// This class contains information about the event, such as the event name, timestamp, and other relevant data.
+
+
+// Defines the ScheduleEvent class, which represents an event that has been scheduled.
+// This class contains information about the event, such as the event name, timestamp, and other relevant data.
+
+
+// Defines the WebRoutes class, which handles the registration of web routes for the application.
+// This class is responsible for mapping HTTP requests to specific controllers and actions.
+
+
+// Defines the ApiRoutes class
