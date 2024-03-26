@@ -20,6 +20,11 @@ class RegisteredUserController extends Controller
 {
     /**
      * Display the registration view.
+     *
+     * If the user is already authenticated, they will be redirected to the home page.
+     * Otherwise, the registration view will be rendered.
+     *
+     * @return Response The registration view.
      */
     public function create(): Response
     {
@@ -31,7 +36,11 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      *
-     * @throws Exception
+     * This method will validate the incoming request, create a new user, and log them in.
+     * If there are any errors, the user will be redirected back to the registration page with an error message.
+     *
+     * @throws Exception If there is an error creating the user.
+     * @return RedirectResponse A redirect response to the home page with a success message.
      */
     public function store(Request $request): RedirectResponse
     {
@@ -41,16 +50,18 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', RulesPassword::defaults()],
         ]);
 
+        // Create a new user with the provided information
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
+        // Fire the Registered event to trigger any necessary notifications or actions
         event(new Registered($user));
 
+        // Log the user in
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME, 303)->with('success', 'Your account has been successfully registered.');
-    }
-}
+        // Redirect the user to the home page with a success message
+        return redirect(RouteServiceProvider::HOME, 303)->with('success', 'Your account has been
