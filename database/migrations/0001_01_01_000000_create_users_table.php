@@ -30,7 +30,9 @@ return new class extends Migration
             $table->string('email')->index(); // Add index for email column
             $table->string('token');
             $table->timestamp('created_at')->nullable();
-            $table->foreign('email')->references('email')->on('users')->onDelete('cascade'); // Add foreign key constraint
+
+            // Add foreign key constraint
+            $table->foreign('email')->references('email')->on('users')->onDelete('cascade');
         });
 
         // Create sessions table
@@ -41,6 +43,9 @@ return new class extends Migration
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
+
+            // Add foreign key constraint
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -48,4 +53,14 @@ return new class extends Migration
      * Reverse the migrations.
      */
     public function down(): void
+    {
+        // Drop sessions table
+        Schema::dropIfExists('sessions');
 
+        // Drop password_reset_tokens table
+        Schema::dropIfExists('password_reset_tokens');
+
+        // Drop users table
+        Schema::dropIfExists('users');
+    }
+};
