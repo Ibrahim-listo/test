@@ -4,11 +4,12 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithFaker;
 
     public function test_profile_page_is_displayed(): void
     {
@@ -18,7 +19,7 @@ class ProfileTest extends TestCase
             ->actingAs($user)
             ->get('/profile');
 
-        $response->assertOk();
+        $response->assertStatus(200);
     }
 
     public function test_profile_information_can_be_updated(): void
@@ -33,7 +34,7 @@ class ProfileTest extends TestCase
             ]);
 
         $response
-            ->assertSessionHasNoErrors()
+            ->assertSessionDoesntHaveErrors()
             ->assertRedirect('/profile');
 
         $user->refresh();
@@ -55,7 +56,7 @@ class ProfileTest extends TestCase
             ]);
 
         $response
-            ->assertSessionHasNoErrors()
+            ->assertSessionDoesntHaveErrors()
             ->assertRedirect('/profile');
 
         $this->assertNotNull($user->refresh()->email_verified_at);
@@ -72,7 +73,7 @@ class ProfileTest extends TestCase
             ]);
 
         $response
-            ->assertSessionHasNoErrors()
+            ->assertSessionDoesntHaveErrors()
             ->assertRedirect('/');
 
         $this->assertGuest();
@@ -95,5 +96,18 @@ class ProfileTest extends TestCase
             ->assertRedirect('/profile');
 
         $this->assertNotNull($user->fresh());
+    }
+
+    // Add the following methods to generate fake user data with email verification
+    protected function userFactory(): User
+    {
+        return User::factory()->verified()->make();
+    }
+
+    protected function userFactoryWithPassword(string $password): User
+    {
+        return User::factory()->verified()->make([
+            'password' => bcrypt($password),
+        ]);
     }
 }
