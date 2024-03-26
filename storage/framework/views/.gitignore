@@ -1,5 +1,13 @@
 # Compiler output files
-*.o
-*.out
-*.core
-
+# ---------------------
+# This section specifies the compiler output files that will be generated during the build process.
+# These files include object files (*.o), executable files (*.out), and core dump files (*.core).
+# Object files contain machine code that is generated from compiling source code files.
+# Executable files are created by linking object files together and are ready to be run on the system.
+# Core dump files are created when a program crashes and contain a snapshot of the program's memory at the time of the crash.
+# These files are important for debugging and understanding the behavior of the program.
+#
+# Example file names:
+#  - my_program.o
+#  - my_program.out
+#  - my_program.core
