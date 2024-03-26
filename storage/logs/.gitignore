@@ -1,3 +1,11 @@
+# .gitignore file for a Python project
+# Ignores byte-compiled files, cache files, log files, databases, virtual environments,
+# distribution directories, coverage directories, PEP 8 style guide violations,
+# Flask secret key file, local configuration file, IPython notebook checkpoints,
+# SQLite database files, Jupyter notebook files, MongoDB databases,
+# Spyder project settings, Rope project metadata, Pytest coverage files,
+# Sphinx documentation files, and Conda environment files.
+
 # Byte-compiled Python files
 *.pyc
 *.pyo
@@ -11,12 +19,14 @@
 
 # Virtual environment directories
 env/
+venv/
 
 # Dist directories
 dist/
 
 # Coverage directories
 htmlcov/
+.coverage
 
 # PEP 8 style guide violations
 f*.py
@@ -26,9 +36,6 @@ secret_key.py
 
 # Local configuration file
 local_config.py
-
-# PyCharm configuration file
-.idea/
 
 # IPython notebook checkpoints
 .ipynb_checkpoints/
@@ -47,9 +54,6 @@ local_config.py
 
 # Rope project metadata
 .ropeproject
-
-# Venv virtual environment files
-venv/
 
 # Pytest coverage files
 .coverage
