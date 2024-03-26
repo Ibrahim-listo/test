@@ -2,15 +2,28 @@ import { useState, createContext, useContext, Fragment } from 'react';
 import { Link } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 
+// Create a new context for the Dropdown component
 const DropDownContext = createContext();
 
+/**
+ * The main Dropdown component that manages the state and behavior of the dropdown.
+ * @param {React.ReactNode} children - The content to be displayed within the dropdown.
+ */
 const Dropdown = ({ children }) => {
+  // Set up state for tracking whether the dropdown is open or not
   const [isOpen, setIsOpen] = useState(false);
 
+  /**
+   * Toggles the dropdown's open state.
+   */
   const toggleOpen = () => {
     setIsOpen((prevState) => !prevState);
   };
 
+  /**
+   * Handles clicks outside of the dropdown to close it.
+   * @param {MouseEvent} e - The click event.
+   */
   const handleOutsideClick = (e) => {
     if (e.target.classList.contains('dropdown-context')) {
       setIsOpen(false);
@@ -19,6 +32,7 @@ const Dropdown = ({ children }) => {
 
   return (
     <DropDownContext.Provider value={{ isOpen, setIsOpen, toggleOpen }}>
+      {/* Sets up a click event listener to handle closing the dropdown when clicking outside of it */}
       <div className="relative dropdown-context" onClick={handleOutsideClick}>
         {children}
       </div>
@@ -26,21 +40,39 @@ const Dropdown = ({ children }) => {
   );
 };
 
-const Trigger = ({ children }) => {
+/**
+ * The Trigger component that displays the dropdown toggle button.
+ * @returns {JSX.Element}
+ */
+const Trigger = () => {
+  // Gets the dropdown context to access the dropdown state
   const { isOpen, toggleOpen } = useContext(DropDownContext);
 
   return (
     <>
+      {/* Displays the dropdown toggle button */}
       <div onClick={toggleOpen}>{children}</div>
 
+      {/* Displays a fixed overlay to catch clicks and close the dropdown */}
       {isOpen && <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)}></div>}
     </>
   );
 };
 
+/**
+ * The Content component that displays the dropdown menu.
+ * @param {Object} props - The component props.
+ * @param {string} props.align - The alignment of the dropdown menu.
+ * @param {string} props.width - The width of the dropdown menu.
+ * @param {string} props.contentClasses - The additional classes for the dropdown menu.
+ * @param {React.ReactNode} props.children - The content to be displayed within the dropdown menu.
+ * @returns {JSX.Element}
+ */
 const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-white dark:bg-gray-700', children }) => {
+  // Gets the dropdown context to access the dropdown state
   const { isOpen, setIsOpen } = useContext(DropDownContext);
 
+  // Determines the alignment classes for the dropdown menu
   let alignmentClasses = 'origin-top';
 
   if (align === 'left') {
@@ -49,6 +81,7 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-whit
     alignmentClasses = 'ltr:origin-top-right rtl:origin-top-left end-0';
   }
 
+  // Determines the width classes for the dropdown menu
   let widthClasses = '';
 
   if (width === '48') {
@@ -57,6 +90,7 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-whit
 
   return (
     <>
+      {/* Displays the dropdown menu */}
       <Transition
         as={Fragment}
         show={isOpen}
@@ -68,40 +102,14 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-whit
         leaveTo="opacity-0 scale-95"
       >
         <div
-          className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses} ${contentClasses}`}
+          // Adds click event listener to close the dropdown when clicking inside the menu
           onClick={(e) => {
             e.stopPropagation();
             setIsOpen(false);
           }}
+          className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses} ${contentClasses}`}
         >
           {children}
         </div>
       </Transition>
-    </>
-  );
-};
-
-const DropdownLink = ({ className = '', children, ...props }) => {
-  const { setIsOpen } = useContext(DropDownContext);
-
-  return (
-    <Link
-      {...props}
-      className={
-        'block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out ' +
-        className
-      }
-      onClick={(e) => {
-        setIsOpen(false);
-      }}
-    >
-      {children}
-    </Link>
-  );
-};
-
-Dropdown.Trigger = Trigger;
-Dropdown.Content = Content;
-Dropdown.Link = DropdownLink;
-
-export default Dropdown;
+   
