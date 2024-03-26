@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Inertia\Inertia;
 
 class ProjectController extends Controller
 {
@@ -13,7 +14,11 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return inertia("Project/Index",[]);
+        $projects = Project::all();
+
+        return Inertia("Project/Index", [
+            'projects' => $projects,
+        ]);
     }
 
     /**
@@ -21,7 +26,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia("Project/Create");
     }
 
     /**
@@ -29,7 +34,9 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        $project = Project::create($request->validated());
+
+        return redirect()->route('projects.index');
     }
 
     /**
@@ -37,7 +44,9 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        return Inertia("Project/Show", [
+            'project' => $project,
+        ]);
     }
 
     /**
@@ -45,7 +54,9 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return Inertia("Project/Edit", [
+            'project' => $project,
+        ]);
     }
 
     /**
@@ -53,7 +64,9 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $project->update($request->validated());
+
+        return redirect()->route('projects.index');
     }
 
     /**
@@ -61,6 +74,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+
+        return redirect()->route('projects.index');
     }
 }
