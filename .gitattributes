@@ -1,11 +1,10 @@
-* text=auto eol=lf
+# .gitignore
 
-*.blade.php diff=html
-*.css diff=css
-*.html diff=html
-*.md diff=markdown
-*.php diff=php
+# Laravel
+*.blade.php
+*.css
+*.html
+*.md
+*.php
 
-/.github export-ignore
-CHANGELOG.md export-ignore
-.styleci.yml export-ignore
+#
