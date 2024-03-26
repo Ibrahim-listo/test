@@ -13,6 +13,7 @@ export default function Login({ status, canResetPassword }) {
         password: '',
         remember: false,
     });
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     useEffect(() => {
         return () => {
@@ -45,6 +46,7 @@ export default function Login({ status, canResetPassword }) {
                         autoComplete="username"
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
+                        required
                     />
 
                     <InputError message={errors.email} className="mt-2" />
@@ -55,12 +57,16 @@ export default function Login({ status, canResetPassword }) {
 
                     <TextInput
                         id="password"
-                        type="password"
+                        type={passwordVisible ? "text" : "password"}
                         name="password"
                         value={data.password}
                         className="mt-1 block w-full"
                         autoComplete="current-password"
+                        onFocus={() => setPasswordVisible(true)}
+                        onBlur={() => setPasswordVisible(false)}
                         onChange={(e) => setData('password', e.target.value)}
+                        required
+                        minLength={8}
                     />
 
                     <InputError message={errors.password} className="mt-2" />
@@ -72,6 +78,7 @@ export default function Login({ status, canResetPassword }) {
                             name="remember"
                             checked={data.remember}
                             onChange={(e) => setData('remember', e.target.checked)}
+                            aria-label="Remember me"
                         />
                         <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
                     </label>
@@ -87,7 +94,7 @@ export default function Login({ status, canResetPassword }) {
                         </Link>
                     )}
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <PrimaryButton type="submit" className="ms-4" disabled={processing}>
                         Log in
                     </PrimaryButton>
                 </div>
