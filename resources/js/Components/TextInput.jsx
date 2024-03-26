@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { forwardRef, useEffect, useRef } from 'react';
+import { forwardRef, useEffect, useRef, useImperativeHandle } from 'react';
 
 const TextInput = forwardRef(
   (
@@ -9,11 +9,18 @@ const TextInput = forwardRef(
       isFocused = false,
       name,
       required,
+      autoComplete,
       ...props
     },
     ref
   ) => {
-    const inputRef = ref && typeof ref === 'object' ? ref : useRef();
+    const inputRef = useRef();
+
+    useImperativeHandle(ref, () => ({
+      focus: () => {
+        inputRef.current.focus();
+      }
+    }));
 
     useEffect(() => {
       if (isFocused) {
@@ -29,11 +36,27 @@ const TextInput = forwardRef(
         name={name}
         ref={inputRef}
         required={required}
-        autoComplete="on"
+        autoComplete={autoComplete}
       />
     );
   }
 );
 
 TextInput.propTypes = {
-  type: PropTypes.oneOf(['text', '
+  type: PropTypes.oneOf(['text', 'email', 'password']),
+  className: PropTypes.string,
+  isFocused: PropTypes.bool,
+  name: PropTypes.string.isRequired,
+  required: PropTypes.bool,
+  autoComplete: PropTypes.string
+};
+
+TextInput.defaultProps = {
+  type: 'text',
+  className: '',
+  isFocused: false,
+  required: false,
+  autoComplete: 'on'
+};
+
+export default TextInput;
