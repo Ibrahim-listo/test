@@ -21,32 +21,34 @@ class DatabaseSeeder extends Seeder
         // Create admin user
         $adminUser = User::factory()
             ->create([
-                'id' => 1,
+                'id' => 1, // Assign a specific ID for the admin user
                 'name' => 'ibrahim',
                 'email' => 'ibrahim@example.com',
                 'password' => Hash::make('123.321A'),
                 'email_verified_at' => Carbon::now(),
             ])
-            ->assignRole(UserRole::Admin);
+            ->assignRole(UserRole::Admin); // Assign the Admin role to the user
 
         // Create regular user
         $regularUser = User::factory()
             ->create([
-                'id' => 2,
+                'id' => 2, // Assign a specific ID for the regular user
                 'name' => 'ahmed',
                 'email' => 'ahmed@example.com',
                 'password' => Hash::make('123.321A'),
                 'email_verified_at' => Carbon::now(),
             ])
-            ->assignRole(UserRole::User);
+            ->assignRole(UserRole::User); // Assign the User role to the user
 
         // Create projects with tasks
         Project::factory()
-            ->count(30)
-            ->has(Task::factory()->count(30), 'tasks')
-            ->create()
+            ->count(30) // Create 30 projects
+            ->has(Task::factory()->count(30), 'tasks') // Each project has 30 tasks
+            ->create() // Create the projects and tasks
             ->each(function (Project $project) {
+                // Attach both the admin and regular users to each project
                 $project->users()->attach([$adminUser->id, $regularUser->id]);
             });
     }
 }
+
