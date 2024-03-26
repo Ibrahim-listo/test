@@ -14,7 +14,9 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::all();
+        $this->authorize('viewAny', Project::class);
+
+        $projects = Project::with('user')->get();
 
         return Inertia("Project/Index", [
             'projects' => $projects,
@@ -26,6 +28,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Project::class);
+
         return Inertia("Project/Create");
     }
 
@@ -34,6 +38,8 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
+        $this->authorize('create', Project::class);
+
         $project = Project::create($request->validated());
 
         return redirect()->route('projects.index');
@@ -44,6 +50,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        $this->authorize('view', $project);
+
         return Inertia("Project/Show", [
             'project' => $project,
         ]);
@@ -54,6 +62,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+        $this->authorize('update', $project);
+
         return Inertia("Project/Edit", [
             'project' => $project,
         ]);
@@ -64,6 +74,8 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
+        $this->authorize('update', $project);
+
         $project->update($request->validated());
 
         return redirect()->route('projects.index');
@@ -74,8 +86,14 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        $this->authorize('delete', $project);
+
         $project->delete();
 
         return redirect()->route('projects.index');
     }
 }
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\
