@@ -1,3 +1,4 @@
+// Import necessary components and hooks
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -5,17 +6,20 @@ import TextInput from '@/Components/TextInput';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 
+// The main functional component that renders the form for updating the user's profile information
 export default function UpdateProfileInformation({
-  mustVerifyEmail,
-  status,
-  className = '',
+  mustVerifyEmail, // Determines if the user must verify their email
+  status, // Status message for the form
+  className = '', // Additional CSS classes for styling
 }: {
   mustVerifyEmail: boolean;
   status: string;
   className?: string;
 }) {
+  // Get the authenticated user from the Inertia page props
   const user = usePage().props.auth.user;
 
+  // Initialize the useForm hook with initial data and validation rules
   const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<{
     name: string;
     email: string;
@@ -24,20 +28,25 @@ export default function UpdateProfileInformation({
     email: user.email,
   });
 
+  // The submit callback function for handling form submission
   const submit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    patch(route('profile.update'));
+    patch(route('profile.update')); // Send a PATCH request to the profile update route
   }, [patch]);
 
+  // Return the JSX for rendering the form
   return (
     <section className={className}>
+      {/* Header with the title and description of the form */}
       <header>
         <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">Profile Information</h2>
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
           Update your account's profile information and email address.
         </p>
       </header>
+      {/* The form with input fields and error handling */}
       <form onSubmit={submit} className="mt-6 space-y-6">
+        {/* Name input field */}
         <div>
           <InputLabel htmlFor="name" value="Name" />
           <TextInput
@@ -54,6 +63,7 @@ export default function UpdateProfileInformation({
           />
           <InputError className="mt-2" message={errors.name} />
         </div>
+        {/* Email input field */}
         <div>
           <InputLabel htmlFor="email" value="Email" />
           <TextInput
@@ -68,6 +78,7 @@ export default function UpdateProfileInformation({
           />
           <InputError className="mt-2" message={errors.email} />
         </div>
+        {/* Display verification-related UI if the user must verify their email and hasn't done so */}
         {mustVerifyEmail && user.email_verified_at === null && (
           <div>
             <p className="text-sm mt-2 text-gray-800 dark:text-gray-200">
@@ -88,6 +99,7 @@ export default function UpdateProfileInformation({
             )}
           </div>
         )}
+        {/* Form submission button and success message */}
         <div className="flex items-center gap-4">
           <PrimaryButton type="submit" disabled={processing}>
             Save
@@ -106,3 +118,4 @@ export default function UpdateProfileInformation({
     </section>
   );
 }
+
