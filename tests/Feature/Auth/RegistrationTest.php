@@ -5,6 +5,7 @@ namespace Tests\Feature\Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
@@ -13,7 +14,7 @@ class RegistrationTest extends TestCase
 
     public function test_registration_screen_can_be_rendered(): void
     {
-        $response = $this->get(route('register'));
+        $response = $this->get(Route::route('register')->uri());
 
         $response->assertStatus(200);
         $response->assertViewIs('auth.register');
@@ -23,7 +24,7 @@ class RegistrationTest extends TestCase
     {
         $password = $this->faker->password(8);
 
-        $response = $this->post(route('register'), [
+        $response = $this->post(Route::route('register')->uri(), [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'password' => $password,
@@ -31,6 +32,6 @@ class RegistrationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        $response->assertRedirect(Route::route('dashboard')->uri());
     }
 }
