@@ -6,16 +6,28 @@ import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 
+/**
+ * UpdatePasswordForm component for updating the user's password
+ * @param {object} props - The component props
+ * @param {string} props.className - Optional. The CSS class for the component.
+ * @returns {JSX.Element} The UpdatePasswordForm component.
+ */
 export default function UpdatePasswordForm({ className = '' }) {
+  // Create refs for the password inputs
   const passwordInput = useRef();
   const currentPasswordInput = useRef();
 
+  // Use the useForm hook to manage form state and submission
   const { data, setData, errors, put, reset, processing, recentlySuccessful } = useForm({
     current_password: '',
     password: '',
     password_confirmation: '',
   });
 
+  /**
+   * updatePassword function to handle form submission on Enter key press
+   * @param {object} e - The event object
+   */
   const updatePassword = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -45,94 +57,4 @@ export default function UpdatePasswordForm({ className = '' }) {
   return (
     <section className={className}>
       <header>
-        <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">Update Password</h2>
-
-        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-          Ensure your account is using a long, random password to stay secure.
-        </p>
-      </header>
-
-      <form onSubmit={(e) => e.preventDefault()} className="mt-6 space-y-6">
-        <div>
-          <InputLabel htmlFor="current_password" value="Current Password" />
-
-          <TextInput
-            id="current_password"
-            ref={currentPasswordInput}
-            name="current_password"
-            value={data.current_password}
-            onChange={(e) => setData('current_password', e.target.value)}
-            type="password"
-            required
-            minLength="8"
-            autoComplete="current-password"
-            autoFocus
-            spellCheck={false}
-            aria-label="Current Password"
-            className="mt-1 block w-full"
-            onKeyDown={updatePassword}
-          />
-
-          <InputError message={errors.current_password} className="mt-2" />
-        </div>
-
-        <div>
-          <InputLabel htmlFor="password" value="New Password" />
-
-          <TextInput
-            id="password"
-            ref={passwordInput}
-            name="password"
-            value={data.password}
-            onChange={(e) => setData('password', e.target.value)}
-            type="password"
-            required
-            minLength="8"
-            autoComplete="new-password"
-            spellCheck={false}
-            aria-label="New Password"
-            className="mt-1 block w-full"
-            onKeyDown={updatePassword}
-          />
-
-          <InputError message={errors.password} className="mt-2" />
-        </div>
-
-        <div>
-          <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
-
-          <TextInput
-            id="password_confirmation"
-            name="password_confirmation"
-            value={data.password_confirmation}
-            onChange={(e) => setData('password_confirmation', e.target.value)}
-            type="password"
-            required
-            minLength="8"
-            autoComplete="new-password"
-            spellCheck={false}
-            aria-label="Confirm Password"
-            className="mt-1 block w-full"
-            onKeyDown={updatePassword}
-          />
-
-          <InputError message={errors.password_confirmation} className="mt-2" />
-        </div>
-
-        <div className="flex items-center gap-4">
-          <PrimaryButton disabled={processing}>Save</PrimaryButton>
-
-          <Transition
-            show={recentlySuccessful}
-            enter="transition ease-in-out"
-            enterFrom="opacity-0"
-            leave="transition ease-in-out"
-            leaveTo="opacity-0"
-          >
-            <p className="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
-          </Transition>
-        </div>
-      </form>
-    </section>
-  );
-}
+        <h2 className="text-lg font-medium text-gray-900 dark:text-gray-1
