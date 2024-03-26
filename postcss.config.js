@@ -1,6 +1,9 @@
-export default {
-    plugins: {
-        tailwindcss: {},
-        autoprefixer: {},
-    },
+// main.js
+
+module.exports = {
+  plugins: [
+    require('tailwindcss'),
+    require('autoprefixer'),
+  ],
 };
+
