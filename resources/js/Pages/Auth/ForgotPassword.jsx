@@ -2,17 +2,24 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useEffect, useForm } from '@inertiajs/react';
 
 export default function ForgotPassword({ status }) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
     });
 
-    const submit = (e) => {
-        e.preventDefault();
+    useEffect(() => {
+        return () => {
+            reset();
+        };
+    }, []);
 
-        post(route('password.email'));
+    const submit = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            post(route('password.email'));
+        }
     };
 
     return (
@@ -35,16 +42,4 @@ export default function ForgotPassword({ status }) {
                     className="mt-1 block w-full"
                     isFocused={true}
                     onChange={(e) => setData('email', e.target.value)}
-                />
-
-                <InputError message={errors.email} className="mt-2" />
-
-                <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Email Password Reset Link
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
-    );
-}
+                    onKey
