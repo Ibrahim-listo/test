@@ -21,11 +21,11 @@ class ProjectFactory extends Factory
         return [
             'name' => $this->faker->sentence(),
             'description' => $this->faker->realText(),
-            'due_date' => $this->faker->dateTimeBetween('now', '+1 year')->format('Y-m-d H:i:s'),
+            'due_date' => $this->faker->dateTimeBetween('now', '+1 year')->format('Y-m-d'), // Changed format to Y-m-d
             'status' => $this->faker->randomElement(['pending', 'in_progress', 'completed']),
             'image_path' => $this->faker->imageUrl(),
-            'created_by' => User::factory(),
-            'updated_by' => User::factory(),
+            'created_by' => User::factory()->create(), // Create a user and assign it
+            'updated_by' => User::factory()->create(), // Create a user and assign it
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
