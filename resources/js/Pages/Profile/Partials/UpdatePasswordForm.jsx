@@ -32,6 +32,11 @@ export default function UpdatePasswordForm({ className = '' }) {
             reset('current_password');
             currentPasswordInput.current.focus();
           }
+
+          if (errors.current_password) {
+            reset('current_password');
+            currentPasswordInput.current.setFocus();
+          }
         },
       });
     }
@@ -47,7 +52,7 @@ export default function UpdatePasswordForm({ className = '' }) {
         </p>
       </header>
 
-      <form onSubmit={updatePassword} className="mt-6 space-y-6" onKeyDown={updatePassword}>
+      <form onSubmit={(e) => e.preventDefault()} className="mt-6 space-y-6">
         <div>
           <InputLabel htmlFor="current_password" value="Current Password" />
 
@@ -63,7 +68,9 @@ export default function UpdatePasswordForm({ className = '' }) {
             autoComplete="current-password"
             autoFocus
             spellCheck={false}
+            aria-label="Current Password"
             className="mt-1 block w-full"
+            onKeyDown={updatePassword}
           />
 
           <InputError message={errors.current_password} className="mt-2" />
@@ -83,7 +90,9 @@ export default function UpdatePasswordForm({ className = '' }) {
             minLength="8"
             autoComplete="new-password"
             spellCheck={false}
+            aria-label="New Password"
             className="mt-1 block w-full"
+            onKeyDown={updatePassword}
           />
 
           <InputError message={errors.password} className="mt-2" />
@@ -102,7 +111,9 @@ export default function UpdatePasswordForm({ className = '' }) {
             minLength="8"
             autoComplete="new-password"
             spellCheck={false}
+            aria-label="Confirm Password"
             className="mt-1 block w-full"
+            onKeyDown={updatePassword}
           />
 
           <InputError message={errors.password_confirmation} className="mt-2" />
@@ -125,4 +136,3 @@ export default function UpdatePasswordForm({ className = '' }) {
     </section>
   );
 }
-
