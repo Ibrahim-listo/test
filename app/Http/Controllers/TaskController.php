@@ -13,8 +13,10 @@ class TaskController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Task::class);
+
         $tasks = Task::all();
-        return view('tasks.index', compact('tasks'));
+        return view('tasks.index', ['tasks' => $tasks]);
     }
 
     /**
@@ -22,6 +24,8 @@ class TaskController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Task::class);
+
         return view('tasks.create');
     }
 
@@ -30,8 +34,10 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
+        $this->authorize('create', Task::class);
+
         Task::create($request->validated());
-        return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
+        return redirect()->back()->with('success', 'Task created successfully.');
     }
 
     /**
@@ -39,6 +45,8 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
+        $this->authorize('view', $task);
+
         return view('tasks.show', compact('task'));
     }
 
@@ -47,6 +55,8 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
+        $this->authorize('update', $task);
+
         return view('tasks.edit', compact('task'));
     }
 
@@ -55,8 +65,10 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
+        $this->authorize('update', $task);
+
         $task->update($request->validated());
-        return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
+        return redirect()->back()->with('success', 'Task updated successfully.');
     }
 
     /**
@@ -64,7 +76,6 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        $task->delete();
-        return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
-    }
-}
+        $this->authorize('delete', $task);
+
+        $task
