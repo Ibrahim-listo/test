@@ -1,15 +1,19 @@
----
-title: "File Ignore List for Git"
-description: "This is a list of files and directories to be ignored in a Git repository."
----
+# This is a Git ignore file
+# It specifies intentionally untracked files that Git should ignore
+# when checking for changes in the repository
 
-# File Ignore List for Git
+# The .git directory contains Git's internal data
+# It should always be ignored
+.git
 
-This is a list of files and directories that should be ignored in a Git repository.
+# The .gitignore file specifies intentionally untracked files
+# It should be ignored to prevent it from being modified by mistake
+.gitignore
 
-## Files to Ignore
+# The README.md file contains information about the repository
+# It should be committed to the repository and not modified by mistake
+README.md
 
-- `.git`
-- `.gitignore`
-- `README.md`
-- `LICENSE`
+# The LICENSE file contains the license agreement for the repository
+# It should be committed to the repository and not modified by mistake
+LICENSE
