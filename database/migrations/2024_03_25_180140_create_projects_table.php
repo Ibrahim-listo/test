@@ -32,10 +32,16 @@ return new class extends Migration
             $table->string('image_path')->nullable();
 
             // Define the 'created_by' column as a foreign key, referencing the 'id' column of the 'users' table
-            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('created_by')
+                ->constrained('users')
+                ->onDelete('cascade') // Added onDelete constraint
+                ->onUpdate('cascade'); // Added onUpdate constraint
 
             // Define the 'updated_by' column as a foreign key, referencing the 'id' column of the 'users' table
-            $table->foreignId('updated_by')->constrained('users');
+            $table->foreignId('updated_by')
+                ->constrained('users')
+                ->onDelete('cascade') // Added onDelete constraint
+                ->onUpdate('cascade'); // Added onUpdate constraint
 
             // Define the 'created_at' and 'updated_at' columns as timestamps
             $table->timestamps();
