@@ -11,16 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cache', function (Blueprint $table) {
+        Schema::create('cache_entries', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->mediumText('value');
             $table->integer('expiration');
+
+            // Add a unique index on the `expiration` column to enforce the limit of one row per key with the same expiration time
+            $table->unique('key', 'expiration');
         });
 
         Schema::create('cache_locks', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->string('owner');
             $table->integer('expiration');
+
+            // Add a unique index on the `expiration` column to enforce the limit of one row per key with the same expiration time
+            $table->unique(['key', 'expiration']);
+
+            // Add an index on the `owner` column for faster lookups
+            $table->index('owner');
         });
     }
 
@@ -29,7 +38,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cache');
+        Schema::dropIfExists('cache_entries');
         Schema::dropIfExists('cache_locks');
     }
 };
+
