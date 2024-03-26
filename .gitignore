@@ -1,14 +1,44 @@
 #!/bin/bash
 
 # List of files and directories to remove
-declare -a arr=(".phpunit.cache" "/node_modules" "/public/build" "/public/hot" "/public/storage" "/storage/*.key" "/vendor" ".env" ".env.backup" ".env.production" ".phpunit.result.cache" "Homestead.json" "Homestead.yaml" "auth.json" "npm-debug.log" "yarn-error.log" "/.fleet" "/.idea" "/.vscode")
+declare -a items_to_remove=(
+  ".phpunit.cache"
+  "/node_modules"
+  "/public/build"
+  "/public/hot"
+  "/public/storage"
+  "/storage/*.key"
+  "/vendor"
+  ".env"
+  ".env.backup"
+  ".env.production"
+  ".phpunit.result.cache"
+  "Homestead.json"
+  "Homestead.yaml"
+  "auth.json"
+  "npm-debug.log"
+  "yarn-error.log"
+  "/.fleet"
+  "/.idea"
+  "/.vscode"
+)
 
 # Iterate over the list and remove each item
-for item in "${arr[@]}"
+for item in "${items_to_remove[@]}"
 do
   if [ -d "$item" ]; then
-    rm -rf "$item"
+    # Confirm removal of directories
+    read -p "Do you want to remove the directory $item (y/n)? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+      if ! rm -rf "$item"; then
+        echo "Error: Failed to remove $item"
+      fi
+    fi
   elif [ -f "$item" ]; then
-    rm "$item"
+    if ! rm "$item"; then
+      echo "Error: Failed to remove $item"
+    fi
   fi
 done
