@@ -7,11 +7,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class PasswordConfirmationTest extends TestCase
+class ConfirmPasswordTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    /** @var User $user */
+    /** @var User */
     private $user;
 
     protected function setUp(): void
@@ -20,28 +20,30 @@ class PasswordConfirmationTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    public function test_confirm_password_screen_can_be_rendered(): void
+    public function test_confirm_password_page_can_be_rendered(): void
     {
-        $response = $this->actingAs($this->user)->get('/confirm-password');
+        $response = $this->actingAs($this->user)->get(route('password.confirm'));
 
         $response->assertStatus(200);
     }
 
     public function test_password_can_be_confirmed(): void
     {
-        $response = $this->actingAs($this->user)->post('/confirm-password', [
-            'password' => $this->faker->password,
+        $password = $this->faker->password;
+
+        $response = $this->actingAs($this->user)->post(route('password.confirm'), [
+            'password' => $password,
         ]);
 
         $response->assertRedirect();
-        $response->assertSessionHasNoErrors();
+        $response->assertSessionDoesntHaveErrors();
     }
 
     public function test_password_is_not_confirmed_with_invalid_password(): void
     {
         $incorrectPassword = $this->faker->word;
 
-        $response = $this->actingAs($this->user)->post('/confirm-password', [
+        $response = $this->actingAs($this->user)->post(route('password.confirm'), [
             'password' => $incorrectPassword,
         ]);
 
