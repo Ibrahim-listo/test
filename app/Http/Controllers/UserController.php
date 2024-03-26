@@ -13,6 +13,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', User::class);
+
         $users = User::all();
         return view('users.index', compact('users'));
     }
@@ -22,6 +24,8 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
+
         return view('users.create');
     }
 
@@ -30,8 +34,10 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        $this->authorize('create', User::class);
+
         User::create($request->validated());
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+        return redirectBack()->with('success', 'User created successfully.');
     }
 
     /**
@@ -39,6 +45,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $this->authorize('view', $user);
+
         return view('users.show', compact('user'));
     }
 
@@ -47,6 +55,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
+
         return view('users.edit', compact('user'));
     }
 
@@ -55,8 +65,10 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        $this->authorize('update', $user);
+
         $user->update($request->validated());
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        return redirectBack()->with('success', 'User updated successfully.');
     }
 
     /**
@@ -64,7 +76,14 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('delete', $user);
+
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        return redirectBack()->with('success', 'User deleted successfully.');
     }
 }
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
