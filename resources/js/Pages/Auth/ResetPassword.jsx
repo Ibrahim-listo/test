@@ -30,7 +30,9 @@ export default function ResetPassword({ token, email }) {
   const submit = (e) => {
     e.preventDefault();
 
-    post(route('password.store'));
+    post(route('password.store'), {
+      onFinish: () => reset('password', 'password_confirmation'),
+    });
   };
 
   return (
@@ -100,4 +102,3 @@ export default function ResetPassword({ token, email }) {
     </GuestLayout>
   );
 }
-
