@@ -5,91 +5,99 @@ import { Transition } from '@headlessui/react';
 const DropDownContext = createContext();
 
 const Dropdown = ({ children }) => {
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-    const toggleOpen = () => {
-        setIsOpen((prevState) => !prevState);
-    };
+  const toggleOpen = () => {
+    setIsOpen((prevState) => !prevState);
+  };
 
-    const handleOutsideClick = (e) => {
-        if (e.target.classList.contains('dropdown-context')) {
-            setIsOpen(false);
-        }
-    };
+  const handleOutsideClick = (e) => {
+    if (e.target.classList.contains('dropdown-context')) {
+      setIsOpen(false);
+    }
+  };
 
-    return (
-        <DropDownContext.Provider value={{ isOpen, setIsOpen, toggleOpen }}>
-            <div className="relative dropdown-context" onClick={handleOutsideClick}>
-                {children}
-            </div>
-        </DropDownContext.Provider>
-    );
+  return (
+    <DropDownContext.Provider value={{ isOpen, setIsOpen, toggleOpen }}>
+      <div className="relative dropdown-context" onClick={handleOutsideClick}>
+        {children}
+      </div>
+    </DropDownContext.Provider>
+  );
 };
 
 const Trigger = ({ children }) => {
-    const { isOpen, toggleOpen } = useContext(DropDownContext);
+  const { isOpen, toggleOpen } = useContext(DropDownContext);
 
-    return (
-        <>
-            <div onClick={toggleOpen}>{children}</div>
+  return (
+    <>
+      <div onClick={toggleOpen}>{children}</div>
 
-            {isOpen && <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)}></div>}
-        </>
-    );
+      {isOpen && <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)}></div>}
+    </>
+  );
 };
 
 const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-white dark:bg-gray-700', children }) => {
-    const { isOpen, setIsOpen } = useContext(DropDownContext);
+  const { isOpen, setIsOpen } = useContext(DropDownContext);
 
-    let alignmentClasses = 'origin-top';
+  let alignmentClasses = 'origin-top';
 
-    if (align === 'left') {
-        alignmentClasses = 'ltr:origin-top-left rtl:origin-top-right start-0';
-    } else if (align === 'right') {
-        alignmentClasses = 'ltr:origin-top-right rtl:origin-top-left end-0';
-    }
+  if (align === 'left') {
+    alignmentClasses = 'ltr:origin-top-left rtl:origin-top-right start-0';
+  } else if (align === 'right') {
+    alignmentClasses = 'ltr:origin-top-right rtl:origin-top-left end-0';
+  }
 
-    let widthClasses = '';
+  let widthClasses = '';
 
-    if (width === '48') {
-        widthClasses = 'w-48';
-    }
+  if (width === '48') {
+    widthClasses = 'w-48';
+  }
 
-    return (
-        <>
-            <Transition
-                as={Fragment}
-                show={isOpen}
-                enter="transition ease-out duration-200"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-            >
-                <div
-                    className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
-                    onClick={() => setIsOpen(false)}
-                >
-                    <div className={`rounded-md ring-1 ring-black ring-opacity-5 ${contentClasses}`}>{children}</div>
-                </div>
-            </Transition>
-        </>
-    );
+  return (
+    <>
+      <Transition
+        as={Fragment}
+        show={isOpen}
+        enter="transition ease-out duration-200"
+        enterFrom="opacity-0 scale-95"
+        enterTo="opacity-100 scale-100"
+        leave="transition ease-in duration-75"
+        leaveFrom="opacity-100 scale-100"
+        leaveTo="opacity-0 scale-95"
+      >
+        <div
+          className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses} ${contentClasses}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsOpen(false);
+          }}
+        >
+          {children}
+        </div>
+      </Transition>
+    </>
+  );
 };
 
 const DropdownLink = ({ className = '', children, ...props }) => {
-    return (
-        <Link
-            {...props}
-            className={
-                'block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out ' +
-                className
-            }
-        >
-            {children}
-        </Link>
-    );
+  const { setIsOpen } = useContext(DropDownContext);
+
+  return (
+    <Link
+      {...props}
+      className={
+        'block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out ' +
+        className
+      }
+      onClick={(e) => {
+        setIsOpen(false);
+      }}
+    >
+      {children}
+    </Link>
+  );
 };
 
 Dropdown.Trigger = Trigger;
