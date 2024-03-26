@@ -1,1 +1,9 @@
-*.sqlite*
+import sqlite3
+import os
+
+# Create a new SQLite database with a filename that matches the wildcard pattern
+for filename in os.listdir('.'):
+    if filename.endswith('.sqlite'):
+        conn = sqlite3.connect(filename)
+        print(f'Created a new SQLite database: {filename}')
+        conn.close()
