@@ -11,7 +11,8 @@ class StoreProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        // Return true if the user is authorized, false otherwise
+        return auth()->check();
     }
 
     /**
@@ -22,7 +23,9 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'owner_id' => 'exists:users,id',
         ];
     }
 }
