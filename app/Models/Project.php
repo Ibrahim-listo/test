@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
+use Throwable;
 
 class Project extends Model
 {
@@ -23,7 +24,7 @@ class Project extends Model
      * @param  array  $attributes
      * @return Project
      *
-     * @throws QueryException
+     * @throws \Throwable
      */
     public static function createProject(array $attributes): Project
     {
@@ -32,7 +33,8 @@ class Project extends Model
         } catch (QueryException $e) {
             report($e);
             // Handle the exception here, e.g. by logging the error or showing a user-friendly message
-            abort(500, 'An error occurred while creating the project.');
+            throw new \RuntimeException('An error occurred while creating the project.', 500);
         }
     }
 }
+
