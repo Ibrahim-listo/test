@@ -11,6 +11,16 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+// Default redirect to the login page
+Route::redirect('/', '/login');
+
+// View routes
+Route::view('/welcome', 'welcome');
+Route::view('/404', 'errors.404');
+Route::view('/password/confirm', 'auth.password.confirm');
+Route::view('/email/verify', 'auth.email.verify');
+Route::view('/password/reset/complete', 'auth.passwords.reset-success');
+
 // Guest Routes
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -49,9 +59,6 @@ Route::middleware('auth')->group(function () {
         ->middleware('throttle:6,1')
         ->name('verification.send');
 
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-        ->name('password.confirm');
-
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
     Route::put('password', [PasswordController::class, 'update'])
@@ -60,3 +67,4 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 });
+
