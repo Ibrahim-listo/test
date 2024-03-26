@@ -8,9 +8,12 @@
 !.htpasswd
 !index.html
 !public/
-!public/css/
-!public/js/
-!public/images/
 
-# In the public directory, only ignore .php files
-public/*.php
+# In the public directory, ignore only .php files
+public/*/*.php
+
+# Exclude specific files in the public/css, public/js, and public/images directories
+!public/css/*
+!public/js/*
+!public/images/*
+
