@@ -3,8 +3,3 @@
 *.out
 *.core
 
-# Backup files
-*.bak
-
-# Ignores any directories named "backup"
-backup/
