@@ -46,4 +46,33 @@ class CustomUser extends Authenticatable implements MustVerifyEmail
     }
 
     // Add any custom methods or properties here
-}
+
+    /**
+     * Get the user's full name.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+    /**
+     * Check if the user has a role.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->roles);
+    }
+
+    /**
+     * Get the user's roles.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function roles()
+    {
+        return $this->belongsTo
