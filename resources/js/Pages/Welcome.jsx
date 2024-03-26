@@ -1,6 +1,8 @@
 import { Link, Head } from '@inertiajs/react';
 
+// Welcome component, responsible for displaying the welcome page
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
+  // Function to handle image errors, hides the screenshot container and adjusts the layout
   const handleImageError = () => {
     document.getElementById('screenshot-container')?.classList.add('hidden');
     document.getElementById('docs-card')?.classList.add('row-span-1');
@@ -8,9 +10,10 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
     document.getElementById('background')?.classList.add('hidden');
   };
 
+  // JSX for the welcome page
   return (
     <>
-      <Head title="Welcome" />
+      <Head title="Welcome" /> {/* Sets the title of the page */}
       <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50 relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
         <div className="absolute inset-0 -z-10">
           <img
@@ -46,4 +49,4 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M61.8548 14.6253C61.8778 14.7102 61.8895 14.7978 61.8897 14.8858V28.5615C61.8898 28.737 61.8434 28.9095 61.7554 29.0614C61.6675 29.2132 61.5409 29.3392 61.3887 29.4265L49.9104 36.0351V49.1337C49.9104 49.4902 49.7209 49.8192 49.4118 49.9987L25.4519 63.7916C25.3971 63.8227 25.3372 63.8427 25.2774 63.8639C25.255 63.8714 25.2338 63.8851 25.2101 63.8913C25.0426 63.9354 24.8666 63.9354 24.6991 63.8913C24.6716 63.8838 24.6467 63.8689 24.6205 63.8589C24.5657 63.8389 24.5084 63.8215 24.456 63.7916L0.501061 49.9987C0.348882 49.9113 0.222437 49.7853 0.134469 49.6334C0.0465019 49.4816 0.0001205
+                  d="M61.8548 14.6253C61.8778 14.7102 61.8895 14.7978 61.8897 14.8858V28.5615C61.8898 28.737 61.8434 28.9095 61.7554 29.0614C61.6675 29.2132 61.5409 29.3392 61.3887 29.4265L49.9104 36.0351V49.1337C49.9104 49.4902 49.7209 49.8192 49.4118 49.9987L25.4519 63.7916C25.3971 63.8227 25.3372 63.8427 25.2774 63.8639C25.255 63.8714 25.2338 63.8851 25.2101 63.89
