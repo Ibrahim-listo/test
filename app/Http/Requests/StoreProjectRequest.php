@@ -8,10 +8,12 @@ class StoreProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * This method checks if the user is authenticated. If the user is not logged in,
+     * they are not authorized to create a new project.
      */
     public function authorize(): bool
     {
-        // Return true if the user is authorized, false otherwise
         return auth()->check();
     }
 
@@ -19,6 +21,10 @@ class StoreProjectRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     *
+     * The rules method returns an array of validation rules for the request. These
+     * rules ensure that the data submitted through the request meets specific
+     * criteria.
      */
     public function rules(): array
     {
@@ -33,6 +39,9 @@ class StoreProjectRequest extends FormRequest
      * Get the error messages for the validation rules.
      *
      * @return array<string, string>
+     *
+     * The messages method returns an array of custom error messages for the
+     * validation rules. These messages will be displayed when validation fails.
      */
     public function messages(): array
     {
